@@ -61,7 +61,7 @@ namespace Manager {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DodajProjekciju,IzmeniProjekciju,IzmeniPopust.
+        ///   Looks up a localized string similar to DodajProjekciju,IzmeniProjekciju,IzmeniPopust,RegistrujKorisnika.
         /// </summary>
         internal static string ADM {
             get {

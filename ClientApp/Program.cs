@@ -35,7 +35,7 @@ namespace ClientApp
             X509Certificate2 srvCert = CertManager.GetCertificateFromStorage(StoreName.TrustedPeople, StoreLocation.LocalMachine, srvCertCN);
             EndpointAddress address2 = new EndpointAddress(new Uri("net.tcp://localhost:10001/WCFService"),
                                         new X509CertificateEndpointIdentity(srvCert));
-            
+           
             using (WCFClient proxy = new WCFClient(binding2, address2))
             {
                 proxy.RegistrujKorisnika();

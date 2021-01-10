@@ -21,6 +21,7 @@ namespace ClientApp
         {
 
             string cltCertCN = Formatter.ParseName(WindowsIdentity.GetCurrent().Name);
+            
 
             this.Credentials.ServiceCertificate.Authentication.CertificateValidationMode = System.ServiceModel.Security.X509CertificateValidationMode.Custom;
             this.Credentials.ServiceCertificate.Authentication.CustomCertificateValidator = new ClientCertValidator();

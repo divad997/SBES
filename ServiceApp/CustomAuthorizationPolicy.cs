@@ -12,7 +12,13 @@ namespace ServiceApp
 {
     public class CustomAuthorizationPolicy : IAuthorizationPolicy
     {
-        string id = Guid.NewGuid().ToString();
+        private string id;
+        private object locker = new object();
+
+        public CustomAuthorizationPolicy()
+        {
+            this.id = Guid.NewGuid().ToString();
+        }
 
         public string Id
         {
@@ -26,7 +32,7 @@ namespace ServiceApp
 
         public bool Evaluate(EvaluationContext evaluationContext, ref object state)
         {
-            object list = null;
+            object list;
 
             if (!evaluationContext.Properties.TryGetValue("Identities", out list))
             {
@@ -39,11 +45,11 @@ namespace ServiceApp
                 return false;
             }
 
-            IIdentity identityToReturn = identities[0];
-
-            evaluationContext.Properties["Principal"] = new MyPrincipal(identityToReturn);
-
+            GenericIdentity identity = identities[0] as GenericIdentity;
+            evaluationContext.Properties["Principal"] = new MyPrincipal(identity);
             return true;
         }
+
+
     }
 }

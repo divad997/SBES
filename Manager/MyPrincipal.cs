@@ -9,59 +9,34 @@ namespace Manager
 {
     public class MyPrincipal : IPrincipal
     {
-        public IIdentity id;
+        private GenericIdentity identity = null;
+        private string group = string.Empty;
+
+        public MyPrincipal(GenericIdentity genericIdentity)
+        {
+            this.identity = genericIdentity;
+
+            group = Formatter.ParseGroup(identity.Name);
+        }
 
         public IIdentity Identity
         {
-            get
-            {
-                return id;
-            }
+            get { return this.identity; }
         }
 
-        public bool IsInRole(string role)
+        public bool IsInRole(string permission)
         {
+            string[] permissions;
 
-            WindowsIdentity wi = id as WindowsIdentity;
-            foreach (IdentityReference u in wi.Groups)
+            if (RoleConfig.GetPermissions(group, out permissions))
             {
-
-                string toBeSearched = "\\";
-                string current_group = (u.Translate(typeof(NTAccount)).ToString()).Substring((u.Translate(typeof(NTAccount)).ToString()).IndexOf(toBeSearched) + toBeSearched.Length);
-                if (current_group == Roles.User)
+                foreach (string permision in permissions)
                 {
-                    if (RolesConfig.KOR.Contains(role))
-                    {
+                    if (permision.Equals(permission))
                         return true;
-                    }
                 }
-                else if (current_group == Roles.VIP)
-                {
-                    if (RolesConfig.VIP.Contains(role))
-                    {
-                        return true;
-                    }
-                }
-                else if (current_group == Roles.Admin)
-                {
-                    if (RolesConfig.ADM.Contains(role))
-                    {
-                        return true;
-                    }
-                }
-
             }
-
             return false;
-        }
-
-        public MyPrincipal()
-        {
-
-        }
-        public MyPrincipal(IIdentity wi)
-        {
-            id = wi;
         }
     }
 }

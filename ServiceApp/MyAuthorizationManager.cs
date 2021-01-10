@@ -13,9 +13,9 @@ namespace ServiceApp
     {
         protected override bool CheckAccessCore(OperationContext operationContext)
         {
-            WindowsIdentity identity = operationContext.ServiceSecurityContext.WindowsIdentity;
-            MyPrincipal principal = new MyPrincipal(identity);
-            return true;
+            MyPrincipal principal = operationContext.ServiceSecurityContext.
+                AuthorizationContext.Properties["Principal"] as MyPrincipal;
+            return principal.IsInRole("RegistrujKorisnika");
         }
     }
 }
